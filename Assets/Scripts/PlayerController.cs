@@ -120,11 +120,9 @@ public class PlayerController : MonoBehaviour
             sr.material.color = Color.red;
 
         }
+        Die();
 
-        if (numberOfHits == 4)
-        {
-            Destroy(gameObject);
-        }
+      
         movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         if (changeDirCooldown <= 0)
         {
@@ -252,5 +250,14 @@ public class PlayerController : MonoBehaviour
         sr.material.color = Color.white;*/
 
 
+    }
+
+    public void Die()
+    {
+        if (numberOfHits == 4)
+        {
+            Instantiate(deathVFX, this.transform.position, Quaternion.identity);
+            Destroy(gameObject);
+        }
     }
 }

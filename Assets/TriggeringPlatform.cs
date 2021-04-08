@@ -92,14 +92,28 @@ public class TriggeringPlatform : MonoBehaviour
             
         }
     }*/
-    private void OnCollisionEnter2D(Collision2D collision)
+      private void OnCollisionEnter2D(Collision2D collision)
+      {
+          if(collision.gameObject.tag == "Ground")
+          {
+              hasLanded = true;
+              rb.isKinematic = true;
+          }
+        if (collision.gameObject.tag == "Player")
+        {
+          //  hasLanded = true;
+            //rb.isKinematic = true;
+            Destroy(collision.gameObject);
+        }
+    }
+    /*private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Ground")
+        if (collision.gameObject.tag == "Ground")
         {
             hasLanded = true;
             rb.isKinematic = true;
         }
-    }
+    }*/
 
     // Go back to initial Point after some time
     private IEnumerator GoBack()
