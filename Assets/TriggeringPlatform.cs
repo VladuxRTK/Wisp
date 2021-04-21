@@ -13,6 +13,12 @@ public class TriggeringPlatform : MonoBehaviour
     public bool ableToFall;
     public float speed;
     public bool hasLanded;
+
+    public GameObject deathVFX;
+
+
+    private AudioManager audioManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +27,7 @@ public class TriggeringPlatform : MonoBehaviour
         shouldFall = true;
         hasFallen = false;
         ableToFall = true;
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").gameObject.GetComponent<AudioManager>();
     }
 
     // Update is called once per frame
@@ -92,18 +99,26 @@ public class TriggeringPlatform : MonoBehaviour
             
         }
     }*/
-      private void OnCollisionEnter2D(Collision2D collision)
+     private void OnCollisionEnter2D(Collision2D collision)
       {
           if(collision.gameObject.tag == "Ground")
           {
               hasLanded = true;
               rb.isKinematic = true;
+              audioManager.PlaySound("fallingPlatformSound");
           }
         if (collision.gameObject.tag == "Player")
         {
-          //  hasLanded = true;
+           // GetComponent<Collider2D>().enabled = false;
+            //  hasLanded = true;
             //rb.isKinematic = true;
-            Destroy(collision.gameObject);
+            Transform playerTransform = collision.gameObject.transform;
+           
+             Destroy(collision.gameObject);
+            audioManager.PlaySound("fallingPlatformSound");
+            Instantiate(deathVFX, playerTransform.position, Quaternion.identity);
+            //collision.gameObject.GetComponent<PlayerController>().Die(true);
+           // GetComponent<Collider2D>().enabled = true;
         }
     }
     /*private void OnTriggerEnter2D(Collider2D collision)

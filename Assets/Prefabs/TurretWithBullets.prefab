@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1767824662789407486}
   - component: {fileID: 1767824662789407485}
+  - component: {fileID: 401798115}
   m_Layer: 0
   m_Name: Barrel
   m_TagString: Untagged
@@ -83,6 +84,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &401798115
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1767824662789407487}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2e22b059ad961c94a8cc33cfd51e521a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1767824663613029291
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,7 +149,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet: {fileID: 6861155744024914549, guid: 36bca86e3f01ddb478c1c79d451aa857, type: 3}
   firePoint: {fileID: 8502506656796517531}
-  timeBtwShots: 0.5
+  barrel: {fileID: 401798115}
+  timeBtwShots: 1
 --- !u!1 &1767824664353585729
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,6 +249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet: {fileID: 0}
   firePoint: {fileID: 0}
+  barrel: {fileID: 0}
   timeBtwShots: 0
 --- !u!1001 &5507587213241111000
 PrefabInstance:

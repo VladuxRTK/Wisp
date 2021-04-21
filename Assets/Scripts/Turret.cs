@@ -8,11 +8,13 @@ public class Turret : MonoBehaviour
 
     public GameObject bullet;
     public Transform firePoint;
+    public Animator barrel;
 
     private Transform player;
     private Quaternion rotation;
-    //private AudioManager audioManager;
+    private AudioManager audioManager;
 
+    private bool canShoot;
     public float timeBtwShots;
     private float startTimeBtwShots;
     
@@ -20,8 +22,9 @@ public class Turret : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-       // audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
         startTimeBtwShots = timeBtwShots;
+        canShoot = true;
     }
 
     // Update is called once per frame
@@ -32,9 +35,17 @@ public class Turret : MonoBehaviour
             RotateToPlayer();
             if (IsSeen() && timeBtwShots <= 0)
             {
-                Shoot();
+                barrel.SetTrigger("Barrel_Shoot");
+
+                StartCoroutine(Shooting());
+                if(canShoot)
+                {
+                    Shoot();
+                }
                 timeBtwShots = startTimeBtwShots;
+
             }
+          
             else if((IsSeen() || !IsSeen()) && timeBtwShots>0)
             {
                 timeBtwShots -= Time.deltaTime;
@@ -44,8 +55,13 @@ public class Turret : MonoBehaviour
 
     private void Shoot()
     {
-        Instantiate(bullet, firePoint.position, this.transform.rotation);
-        //audioManager.PlaySound("laserSound");
+       
+        
+            Instantiate(bullet, firePoint.position, this.transform.rotation);
+            audioManager.PlaySound("laserSound");
+        canShoot = false;
+        
+        
     }
 
     
@@ -70,5 +86,18 @@ public class Turret : MonoBehaviour
             }
         }
         return false;
+    }
+
+    bool AnimatorIsPlaying()
+    {
+        return barrel.GetCurrentAnimatorStateInfo(0).normalizedTime < 1;
+    }
+
+    private IEnumerator Shooting()
+    {
+        yield return new WaitForSeconds(0.5f);
+        canShoot = true;
+        
+       
     }
 }

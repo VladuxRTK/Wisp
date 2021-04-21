@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 movement;
 
     private GameManager gm;
+    private AudioManager audioManager;
     private float changeCool;
     private bool canChangeDir;
     private bool isPaused;
@@ -37,6 +39,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         // material = GetComponent<Renderer>().material;
         gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
         sr = GetComponent<SpriteRenderer>();
 
 
@@ -50,7 +53,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(numberOfHits);
+        //Debug.Log(numberOfHits);
 
         if (numberOfHits != 0 && timeHit <=0)
         {
@@ -256,8 +259,27 @@ public class PlayerController : MonoBehaviour
     {
         if (numberOfHits == 4)
         {
+            gm.numberOfTriesPerLevel[SceneManager.GetActiveScene().buildIndex]++;
+            gm.isPlayerDead = true;
             Instantiate(deathVFX, this.transform.position, Quaternion.identity);
-            Destroy(gameObject);
+
+            audioManager.PlaySound("laserDeathSound");
+            numberOfHits = 0;
+            //Destroy(gameObject);
+            sr.material.color = Color.white;
+        }
+    }
+
+    public void Die(bool toDie)
+    {
+        if(toDie)
+        {
+            gm.isPlayerDead = true;
+            gm.numberOfTriesPerLevel[SceneManager.GetActiveScene().buildIndex]++;
+           // Destroy(gameObject);
+            Instantiate(deathVFX, this.transform.position, Quaternion.identity);
+            sr.material.color = Color.white;
+            toDie = false;
         }
     }
 }

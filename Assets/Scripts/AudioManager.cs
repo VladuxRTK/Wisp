@@ -6,7 +6,10 @@ public class AudioManager : MonoBehaviour
 {
 
     public List<AudioClip> laserClip;
-
+    public List<AudioClip> deathClip;
+    public List<AudioClip> plaftormFallingClip;
+    public List<AudioClip> buttonClickClip;
+    public List<AudioClip> loadComplete;
     private AudioSource audioSource;
 
 
@@ -30,6 +33,21 @@ public class AudioManager : MonoBehaviour
             case "laserSound":
                 audioSource.PlayOneShot(laserClip[Random.Range(0, laserClip.Count)]);
                 break;
+            case "laserDeathSound":
+                audioSource.PlayOneShot(deathClip[0]);
+                break;
+            case "fallingPlatformSound":
+                audioSource.PlayOneShot(plaftormFallingClip[0]);
+                break;
+            case "buttonClickSound":
+                audioSource.PlayOneShot(buttonClickClip[Random.Range(0, buttonClickClip.Count)]);
+                break;
+            case "loadCompleteSound":
+                audioSource.PlayOneShot(loadComplete[0]);
+                break;
+
+                //   case "deathEffectSound":
+
         }
     }
 }
