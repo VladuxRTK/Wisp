@@ -14,6 +14,10 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject player;
     public Transform respawnPoint;
+    public static bool hasAddedPositions;
+    public GhostPlayer ghost;
+    public GhostEntity ghostEnt;
+    public GhostReplayer ghost2;
 
     public  List<int> bestTries;
 
@@ -24,6 +28,7 @@ public class GameManager : MonoBehaviour
     {
         tries.text = "Tries: 0";
         isPlayerDead = false;
+        hasAddedPositions = false;
         player = GameObject.FindGameObjectWithTag("Player");
         // playerPref = player;
         //PlayerPrefs.SetInt("BestTriesLevel1", 99999);
@@ -40,9 +45,17 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt("LeastTries" + SceneManager.GetActiveScene().buildIndex, numberOfTriesPerLevel[SceneManager.GetActiveScene().buildIndex]);
         }*/
         Debug.Log(PlayerPrefs.GetInt("BestTriesLevel1"));
-       
-      // player = GameObject.FindGameObjectWithTag("Player");
+
+        // player = GameObject.FindGameObjectWithTag("Player");
+        //if (isPlayerDead)
+
+
+        //{
+           
+        //}
         
+
+
     }
     void LateUpdate()
     {
@@ -58,8 +71,33 @@ public class GameManager : MonoBehaviour
     {
         if (isPlayerDead)
         {
+            // ghost.gameObject.transform.position = respawnPoint.position;
+            // ghost.gameObject.SetActive(true);
+            //  ghostEnt.isRecording = true;
+            //  ghostEnt.isReplaying = true;
+           // ghost.gameObject.SetActive(true);
+           
+            //ghost.gameObject.transform.position = player.gameObject.GetComponent<PlayerController>().positions[200].position;
+           // ghost.AddPoints(player.gameObject.GetComponent<PlayerController>().positions);
             player.SetActive(false);
+            ghost.gameObject.SetActive(true);
+            ghost2.timeStamp = new List<float>(ghostEnt.timeStamp);
+            ghost2.position = new List<Vector3>(ghostEnt.position);
+            // ghost2.timeStamp[i] = ghostEnt.timeStamp[i];
+
+
+            ghostEnt.ResetData();
+            /* for(int i =0;i<ghostEnt.position.Count;i++)
+             {
+                 ghost2.timeStamp[i]  = ghostEnt.timeStamp[i];
+                 ghost2.position[i] = ghostEnt.position[i];
+                 ghost2.timeStamp[i]  = ghostEnt.timeStamp[i];
+             }
+
+             ghostEnt.ResetData();*/
             // StartCoroutine(WaitRespawn());
+            //hasAddedPositions = true;
+
             player.SetActive(true);
             player.transform.position = respawnPoint.position;
             isPlayerDead = false;

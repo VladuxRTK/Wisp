@@ -13,11 +13,21 @@ public class PlayerController : MonoBehaviour
     public float changeDirCooldown;
     public GameObject deathVFX;
 
+
+    public bool hasAddedPos;
+
+    //public Ghost ghost;
+
     public List<Color> healthColors;
 
     public float timeHit;
 
     public static int numberOfHits;
+
+    public GhostEntity ghost;
+    public GhostReplayer ghost2;
+
+    // public List<Transform> positions;
 
     private Vector2 movement;
 
@@ -54,7 +64,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //Debug.Log(numberOfHits);
-
+       // Debug.Log(positions);
+            
+        
         if (numberOfHits != 0 && timeHit <=0)
         {
             timeHit = 6f;
@@ -175,7 +187,7 @@ public class PlayerController : MonoBehaviour
 
 
 
-
+        //positions.Add(this.transform);
         //  transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed*Time.deltaTime);
         canChangeDir = false;
 
@@ -262,11 +274,18 @@ public class PlayerController : MonoBehaviour
             gm.numberOfTriesPerLevel[SceneManager.GetActiveScene().buildIndex]++;
             gm.isPlayerDead = true;
             Instantiate(deathVFX, this.transform.position, Quaternion.identity);
-
+            //ghost.canAdd = true;
+            //  //ghost.AddPoints(positions);
+            // positions = new List<Transform>();
+          //  ghost.isRecording = false;
+            
             audioManager.PlaySound("laserDeathSound");
             numberOfHits = 0;
+          
+            //GetComponent<GhostRecorder>().ResetData();
             //Destroy(gameObject);
             sr.material.color = Color.white;
+            
         }
     }
 
@@ -280,6 +299,10 @@ public class PlayerController : MonoBehaviour
             Instantiate(deathVFX, this.transform.position, Quaternion.identity);
             sr.material.color = Color.white;
             toDie = false;
+           /// GetComponent<GhostRecorder>().ResetData();
+            // ghost.canAdd = true;
+            // ghost.AddPoints(positions);
+
         }
     }
 }
