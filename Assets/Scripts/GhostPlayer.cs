@@ -5,7 +5,7 @@ using UnityEngine;
 public class GhostPlayer : MonoBehaviour
 {
     public GhostReplayer ghost;
-
+    public bool move;
     private float timeValue;
     private int index1;
     private int index2;
@@ -14,7 +14,7 @@ public class GhostPlayer : MonoBehaviour
     void Awake()
     {
         timeValue = 0;
-       
+        move = false;
         
        
     }
@@ -22,20 +22,30 @@ public class GhostPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timeValue += Time.unscaledDeltaTime;
-
-        if (ghost.position.Count > 0 && this.transform.position != GameObject.FindGameObjectWithTag("Player").transform.position)
-        {
-            GetIndex();
-            SetTransform();
-        }
-            
-     
        
-       /* if(this.transform.position == ghost.lastRun[ghost.lastRun.Count - 1])
+        
+            timeValue += Time.unscaledDeltaTime;
+
+            if (ghost.position.Count > 0 && this.transform.position != GameObject.FindGameObjectWithTag("Player").transform.position)
+            {
+                GetIndex();
+                SetTransform();
+            }
+
+           
+        
+
+        if (this.transform.position == ghost.position[ghost.position.Count - 1])
         {
-          
-        }*/
+            timeValue = 0f;
+            // this.transform.position = new Vector3(9999f, 9999f, 0f);
+            Debug.Log("Here");
+           ghost.ResetData();
+            //move = false;
+        }
+
+
+
     }
     
 

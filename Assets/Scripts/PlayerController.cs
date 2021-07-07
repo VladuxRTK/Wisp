@@ -11,9 +11,10 @@ public class PlayerController : MonoBehaviour
     private bool isMoving;
     private Vector2 direction;
     public float changeDirCooldown;
+    public float initialSpeed;
     public GameObject deathVFX;
 
-
+    
     public bool hasAddedPos;
 
     //public Ghost ghost;
@@ -36,11 +37,12 @@ public class PlayerController : MonoBehaviour
     private float changeCool;
     private bool canChangeDir;
     private bool isPaused;
-
+    public bool laserHit;
     private Material material;
-
+    public bool isRunning;
+    
     private int numberOfTimePaused;
-
+    private IEnumerator blink;
     private int numberOfLastHit;
     private SpriteRenderer sr;
 
@@ -51,22 +53,24 @@ public class PlayerController : MonoBehaviour
         gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
         sr = GetComponent<SpriteRenderer>();
-
-
+        isRunning = false;
+        initialSpeed = moveSpeed;
         changeCool = changeDirCooldown;
         canChangeDir = true;
         isPaused = false;
+        blink = Blink();
         numberOfHits = 0;
         numberOfLastHit = 0;
+        laserHit = false;
     }
 
 
     void Update()
     {
         //Debug.Log(numberOfHits);
-       // Debug.Log(positions);
-            
-        
+        // Debug.Log(positions);
+
+        //DieLaser();
         if (numberOfHits != 0 && timeHit <=0)
         {
             timeHit = 6f;
@@ -84,10 +88,15 @@ public class PlayerController : MonoBehaviour
                 timeHit = 6f;
                 numberOfLastHit = numberOfHits;
             }
-            else { timeHit -= Time.deltaTime; if (timeHit <= 2f)
+            else { timeHit -= Time.deltaTime;
+                if (timeHit <= 2f)
                 {
                     StartCoroutine(Blink());
                 }
+               /* if(timeHit>=2f && isRunning)
+                {
+                    StopCoroutine(blink);
+                }*/
             }
            
           
@@ -159,7 +168,11 @@ public class PlayerController : MonoBehaviour
 
         // rb.isKinematic = true; 
         Pause();
-
+        if(laserHit)
+        {
+           // Instantiate(deathVFX, this.transform.position, Quaternion.identity);
+            //laserHit = !laserHit;
+        }
 
     }
     private void FixedUpdate()
@@ -233,7 +246,9 @@ public class PlayerController : MonoBehaviour
     //Make the player blink when close to resetting number of hits
     private IEnumerator Blink()
     {
+        isRunning = true;
         Color currentColor;
+        
         currentColor = sr.material.color;
         /*while(timeHit!=0)
         {
@@ -255,6 +270,25 @@ public class PlayerController : MonoBehaviour
         sr.material.color = currentColor;
         yield return new WaitForSeconds(0.3f);
         sr.material.color = Color.white;
+        /*if (!laserHit)
+        {
+            
+            int counter = 0;
+            while (counter < 6)
+            {
+                Debug.Log("Here");
+
+                sr.material.color = Color.white;
+                yield return new WaitForSeconds(0.3f);
+                sr.material.color = currentColor;
+                counter++;
+            }
+        }
+        if(laserHit)
+        {
+            yield break;
+        }*/
+        isRunning = false;
       /*  yield return new WaitForSeconds(0.2f);
         sr.material.color = currentColor;
         yield return new WaitForSeconds(0.2f);
@@ -288,11 +322,16 @@ public class PlayerController : MonoBehaviour
             
         }
     }
-
+    public void VFX()
+    {
+        Instantiate(deathVFX, this.transform.position, Quaternion.identity);
+    }
     public void Die(bool toDie)
     {
         if(toDie)
         {
+
+
             gm.isPlayerDead = true;
             gm.numberOfTriesPerLevel[SceneManager.GetActiveScene().buildIndex]++;
            // Destroy(gameObject);
@@ -305,4 +344,33 @@ public class PlayerController : MonoBehaviour
 
         }
     }
+
+    public void DieLaser()
+    {
+
+
+       // if (laserHit)
+        // StopAllCoroutines();
+       // {
+           // laserHit = !laserHit;
+            gm.isPlayerDeadLaser = true;
+            gm.numberOfTriesPerLevel[SceneManager.GetActiveScene().buildIndex]++;
+            // Destroy(gameObject);
+
+            sr.material.color = Color.white;
+            sr.material.color = Color.red;
+            moveSpeed = 0f;
+            Instantiate(deathVFX, this.transform.position, Quaternion.identity);
+            // laserHit = false;
+
+            /// GetComponent<GhostRecorder>().ResetData();
+            // ghost.canAdd = true;
+            // ghost.AddPoints(positions);
+        //}
+
+    }
+
+   
+    
+    
 }

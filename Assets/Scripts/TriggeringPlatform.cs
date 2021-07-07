@@ -18,8 +18,9 @@ public class TriggeringPlatform : MonoBehaviour
 
 
     private AudioManager audioManager;
+    private BoxCollider2D myCollider;
 
-    // Start is called before the first frame update
+    // Start is called before the firxst frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -28,6 +29,8 @@ public class TriggeringPlatform : MonoBehaviour
         hasFallen = false;
         ableToFall = true;
         audioManager = GameObject.FindGameObjectWithTag("AudioManager").gameObject.GetComponent<AudioManager>();
+        myCollider = GetComponent<BoxCollider2D>();
+        myCollider.enabled = false;
     }
 
     // Update is called once per frame
@@ -68,6 +71,7 @@ public class TriggeringPlatform : MonoBehaviour
         }
         if(hasLanded)
         {
+            myCollider.enabled = false; 
             StartCoroutine(GoBack());
         }
        
@@ -87,6 +91,8 @@ public class TriggeringPlatform : MonoBehaviour
     public void SetRb(bool value)
     {
         rb.isKinematic = value;
+        myCollider.enabled = true;
+
     }
 
     /*private void OnTriggerEnter2D(Collider2D collision)
@@ -113,8 +119,9 @@ public class TriggeringPlatform : MonoBehaviour
             //  hasLanded = true;
             //rb.isKinematic = true;
             Transform playerTransform = collision.gameObject.transform;
-           
-             Destroy(collision.gameObject);
+
+            PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+            player.Die(true);
             audioManager.PlaySound("fallingPlatformSound");
             Instantiate(deathVFX, playerTransform.position, Quaternion.identity);
             //collision.gameObject.GetComponent<PlayerController>().Die(true);

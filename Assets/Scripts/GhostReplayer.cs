@@ -10,7 +10,7 @@ public class GhostReplayer : ScriptableObject
 
     public List<float> timeStamp;
 
-    public List<Vector3> position=new List<Vector3>(999999);
+    public List<Vector3> position=new List<Vector3>();
 
     // Start is called before the first frame update
    

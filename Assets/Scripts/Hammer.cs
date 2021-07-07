@@ -13,6 +13,8 @@ public class Hammer : MonoBehaviour
    // public HasFallen nextPoint;
     public float speed;
 
+    private BoxCollider2D myCollider;
+
     private bool fall;
     //public bool hasFallenX;
     private bool isRising;
@@ -30,6 +32,8 @@ public class Hammer : MonoBehaviour
         startTimeBtwRises = timeBtwRises;
       //  hasFallenX = false;
         initialPoint = this.transform.position;
+        myCollider = GetComponent<BoxCollider2D>();
+        myCollider.enabled = false;
     }
 
     // Update is called once per frame
@@ -83,12 +87,13 @@ public class Hammer : MonoBehaviour
         if(fall)
         {
             rb.isKinematic = false;
+            myCollider.enabled = true;
         }
         if(rise)
         {
             
             rb.isKinematic = true;
-           
+            myCollider.enabled = false;
             this.transform.position = Vector2.MoveTowards(this.transform.position, initialPoint, speed * Time.deltaTime);
            
         }
@@ -96,11 +101,21 @@ public class Hammer : MonoBehaviour
       
     }
 
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.tag == "Player")
         {
-            Destroy(collision.gameObject);
+           // collision.gameObject.GetComponent<Collider2D>().enabled = false;
+            PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+            myCollider.enabled = false;
+            player.gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            
+            
+            player.Die(true);
+            myCollider.enabled = true;
+            
+            //collision.gameObject.GetComponent<Collider2D>().enabled = true;
         }
     }
 

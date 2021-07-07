@@ -84,9 +84,13 @@ public class TimedLaser : MonoBehaviour
             // Check what object the ray hit
             if (hit.collider.CompareTag("Player"))
             {
-                hit.collider.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
-                hit.collider.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                StartCoroutine(KillPlayer(hit));
+                //hit.collider.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+                // Vector2 initialSpeed = hit.collider.gameObject.GetComponent<Rigidbody2D>().velocity;
+                // hit.collider.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                hit.collider.gameObject.GetComponent<PlayerController>().DieLaser();
+                hit.collider.enabled = false;
+               // StartCoroutine(KillPlayer(hit));
+              //  hit.collider.gameObject.GetComponent<PlayerController>().moveSpeed = 0f;
 
 
 
@@ -163,12 +167,15 @@ public class TimedLaser : MonoBehaviour
     private IEnumerator KillPlayer(RaycastHit2D hit)
     {
         hit.collider.gameObject.GetComponent<PlayerController>().moveSpeed = 0f;
-        GameObject playerDeathVFX = hit.collider.gameObject.GetComponent<PlayerController>().deathVFX;
+       // GameObject playerDeathVFX = hit.collider.gameObject.GetComponent<PlayerController>().deathVFX;
         Transform playerTransform = hit.collider.gameObject.GetComponent<Transform>();
         yield return new WaitForSeconds(0.2f);
 
-        Destroy(hit.collider.gameObject);
-        Instantiate(playerDeathVFX, playerTransform.position, Quaternion.identity);
+        //Destroy(hit.collider.gameObject);
+        PlayerController player = hit.collider.gameObject.GetComponent<PlayerController>();
+        player.Die(true);
+       
+        //Instantiate(playerDeathVFX, playerTransform.position, Quaternion.identity);
 
     }
 

@@ -47,7 +47,12 @@ MonoBehaviour:
   numberOfTriesPerLevel: 0000000000000000
   bestTime: 
   tries: {fileID: 0}
+  timer: {fileID: 0}
   isPlayerDead: 0
+  isPlayerDeadLaser: 0
   player: {fileID: 0}
   respawnPoint: {fileID: 0}
+  ghost: {fileID: 0}
+  ghostEnt: {fileID: 11400000, guid: 8f97b084daab9194aa34d29bd578a428, type: 2}
+  ghost2: {fileID: 11400000, guid: efced9cfbc5a1a943a6ffa4f8dcac584, type: 2}
   bestTries: 

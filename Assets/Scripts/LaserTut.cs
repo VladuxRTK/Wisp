@@ -49,12 +49,14 @@ public class LaserTut : MonoBehaviour
             // Check what object the ray hit
             if(hit.collider.CompareTag("Player"))
             {
-                hit.collider.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
-                hit.collider.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                StartCoroutine(KillPlayer(hit));    
-                
-               
-                
+                //hit.collider.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+                // hit.collider.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                hit.collider.gameObject.GetComponent<PlayerController>().DieLaser();
+                hit.collider.enabled = false;
+                // StartCoroutine(KillPlayer(hit));    
+
+
+
                 //Destroy(hit.collider.gameObject);
             }
 
